@@ -1,2 +1,2 @@
-require("caffeine")
-require("spotifymenubar")
+require("modules.caffeine")
+require("modules.spotifymenubar")
