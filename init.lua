@@ -1,2 +1,2 @@
 require("caffeine")
-require("myspotify2")
+require("spotifymenubar")
