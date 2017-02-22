@@ -70,12 +70,7 @@ end
 
 function updateData()
     artist, album, track = getCurrent()
-    if artist == nil then 
-        --set icon here
-        spotmenu:setTitle('None')
-    else
-        --set icon here
-        spotmenu:setTitle(artist .. ' - ' .. track)
+    if not (artist == nil) then 
         local playlabel = 'Pause'
         if m.isPaused() then 
             playlabel = 'Play'
@@ -98,6 +93,7 @@ end
 
 -- menubar config
 if spotmenu then 
+    spotmenu:setIcon("images/spotify/icon.png")
     spotmenu:setMenu(updateData)
     updateData()
 end
