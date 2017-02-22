@@ -6,10 +6,12 @@ local playerapi = nil
 
 local api = hs.spotify
 
+-- launch or focus
 local function openSpotify()
     hs.application.launchOrFocus(SPOTIFY)
 end
 
+-- get information about the current track
 local function getCurrent()
     local artist = nil
     local album = nil
@@ -22,11 +24,10 @@ local function getCurrent()
     return artist, album, track
 end
 
+-- return true if paused
 function m.isPaused()
     local state = api.getPlaybackState()
-    local paused = state == api.state_paused
-    local playing = (state == api.state_playing)
-    return paused and not playing
+    return state == api.state_paused
 end
 
 
@@ -42,7 +43,7 @@ function m.playPause()
     end
 end
 
--- skip to the next track
+-- next track
 function m.nextTrack()
     if api ~= nil then
         local state = api.getPlaybackState()
@@ -53,22 +54,31 @@ function m.nextTrack()
     end
 end
 
--- skip to the previous track
-function m.prevTrack()
+-- previous track
+function prevTrack()
+    local artist, album, track = nil
     if api ~= nil then
         local state = api.getPlaybackState()
-        local before = getCurrent()
+        artist, album, track = getCurrent()
         api.previous()
         if state == api.state_paused then
             api.play()
         end
-        if before == getCurrent() then 
-            api.previous()
-        end
-
     end
+    return artist, album, track
 end
 
+function m.prevTrack()
+    local partist, palbum, ptrack = prevTrack()
+    hs.timer.doAfter(0, function()
+                            local artist, album, track = getCurrent()
+                            if (partist == artist) and (palbum == album) and (ptrack == track) then 
+                                prevTrack() 
+                            end 
+                        end)
+end
+
+-- update data on click of the menubar option
 function updateData()
     artist, album, track = getCurrent()
     if not (artist == nil) then 
