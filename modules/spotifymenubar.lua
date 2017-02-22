@@ -32,40 +32,41 @@ end
 
 -- play if paused, or pause if playing
 function m.playPause()
-  if api ~= nil then
-    local state = api.getPlaybackState()
-    if state == api.state_paused then
-      api.play()
-    elseif state ~= nil then
-      api.pause()
+    if api ~= nil then
+        local state = api.getPlaybackState()
+        if state == api.state_paused then
+            api.play()
+        elseif state ~= nil then
+            api.pause()
+        end
     end
-  end
 end
 
 -- skip to the next track
 function m.nextTrack()
-  if api ~= nil then
-    local state = api.getPlaybackState()
-    api.next()
-    if state == api.state_paused then
-      api.play()
+    if api ~= nil then
+        local state = api.getPlaybackState()
+        api.next()
+        if state == api.state_paused then
+            api.play()
+        end
     end
-  end
 end
 
 -- skip to the previous track
 function m.prevTrack()
-  if api ~= nil then
-    local state = api.getPlaybackState()
-    local before = getCurrent()
-    api.previous()
-    if before == getCurrent() then 
+    if api ~= nil then
+        local state = api.getPlaybackState()
+        local before = getCurrent()
         api.previous()
+        if state == api.state_paused then
+            api.play()
+        end
+        if before == getCurrent() then 
+            api.previous()
+        end
+
     end
-    if state == api.state_paused then
-      api.play()
-    end
-  end
 end
 
 function updateData()
