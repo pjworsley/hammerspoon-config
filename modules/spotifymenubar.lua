@@ -3,6 +3,7 @@ local spotmenu = hs.menubar.new()
 local m = {}
 local SPOTIFY = 'Spotify'
 local playerapi = nil
+local fullskip = true
 
 local api = hs.spotify
 
@@ -68,14 +69,20 @@ function prevTrack()
     return artist, album, track
 end
 
+function toggleSkipState()
+    fullskip = not fullskip
+end
+
 function m.prevTrack()
     local partist, palbum, ptrack = prevTrack()
-    hs.timer.doAfter(0, function()
-                            local artist, album, track = getCurrent()
-                            if (partist == artist) and (palbum == album) and (ptrack == track) then 
-                                prevTrack() 
-                            end 
-                        end)
+    if fullskip then
+        hs.timer.doAfter(0, function()
+                                local artist, album, track = getCurrent()
+                                if (partist == artist) and (palbum == album) and (ptrack == track) then 
+                                    prevTrack() 
+                                end 
+                            end)
+    end
 end
 
 -- update data on click of the menubar option
@@ -95,6 +102,8 @@ function updateData()
             { title = playlabel, fn = m.playPause},
             { title = 'Next', fn = m.nextTrack},
             { title = 'Previous', fn = m.prevTrack},
+            { title = '-'},
+            { title = 'Full skip back', checked=fullskip, fn = toggleSkipState},
             { title = '-'},
             { title = 'Open Spotify', fn = openSpotify}
         }
