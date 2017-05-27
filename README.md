@@ -1,7 +1,7 @@
 # hammerspoon-config
 Custom config files for macOS hammerspoon
 
-##Caffeine
+## Caffeine
 The simple caffeine example from http://www.hammerspoon.org/go/#simplemenubar but with pretty icons instead of text in the menu bar.
 
 ## Spotify menubar
